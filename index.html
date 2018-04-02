@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    
+  <head>
+    <meta charset="utf-8" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.2/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretty-checkbox@3.0/dist/pretty-checkbox.min.css">
+<link rel="stylesheet" href="css/usercss.css">
+</head>
+
+  <body>
+      <div ng-app="BasicHttpAuthExample" ng-cloak  > 
+    <div class="jumbotron">
+        <div ng-include="'header.html'"></div>
+      <div class="container">
+          
+        <div class="col-xs-offset-2 col-xs-8">
+          <div ng-view>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+    <script src="//code.jquery.com/jquery-2.0.3.min.js"></script>
+    <script src="//code.angularjs.org/1.6.1/angular.js"></script>
+    <script src="//code.angularjs.org/1.6.1/angular-route.js"></script>
+    <script src="//code.angularjs.org/1.6.1/angular-cookies.js"></script>
+    <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-2.5.0.js"></script>
+    <!-- <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular-sanitize.js"></script> -->
+    <script src="scripts/app.js"></script>
+    <script src="modules/authentication/services.js"></script>
+    <script src="modules/authentication/controllers.js"></script>
+    <script src="modules/home/controllers.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    
+  </div>
+  </body>
+  
+</html>

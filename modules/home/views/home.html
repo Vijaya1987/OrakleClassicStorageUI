@@ -1,0 +1,90 @@
+</br>
+</br>
+<!-- <p align="right">Logged in as : {{creds.currentUser.username}}</p> -->
+
+<script type="text/ng-template" id="myModalContent.html">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modal-title">Create Container</h3>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" id="contName">Container Name</span>
+                    </div>
+                    <input type="text" name="contName" id="contName" class="form-control" aria-label="Default" aria-describedby="containerName" ng-model="contName">
+                </div>    
+            </div>
+            <div class="modal-footer">
+                    <button class="btn btn-primary" ng-click="ok()">Create</button>
+                    <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+            </div>
+</script>
+
+<script type="text/ng-template" id="myModalContentDelete.html">
+    <div class="modal-header">
+        <h3 class="modal-title" id="modal-title">Delete Container</h3>
+    </div>
+    <div class="modal-body" id="modal-body">
+        <p>Are you sure you want to delete :</p>
+        <ul>
+            <li ng-repeat="cont in checked_containers">
+               {{cont}}
+            </li>
+        </ul>
+    </div>
+    <div class="modal-footer">
+            <button class="btn btn-primary" ng-click="ok()">Delete</button>
+            <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+    </div>
+</script>
+
+<div ng-controller="HomeController">
+        
+            <div class="btn-group float-right" style="margin: 5px;" >
+                <button class="btn btn-primary" ng-click="open('sm')">Create Container</button>
+                <button class="btn btn-primary" ng-click="delete('sm')">Delete Container</button>
+            </div>
+
+<table id="containerTable" class="table table-hover">
+    <thead>
+        <tr>
+            <th>Select</th>
+            <th>Container Name</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="c in containers.data.container">
+                <td><div class="form-group row">
+                        
+                        <div class="col-sm-10">
+                          <!-- <div class="form-check"> -->
+                            
+                                <!-- <label class="btn btn-secondary">
+                                  <input type="checkbox" checked autocomplete="off"  value="{{c.containerName}}" check-list='checked_containers'>
+                                </label> -->
+                              <!-- <input class="form-check-input" type="checkbox" value="{{c.containerName}}" check-list='checked_containers'> -->
+                            
+                          <!-- </div> -->
+                          <div class="pretty p-icon p-round p-smooth">
+                                <input type="checkbox" value="{{c.containerName}}" check-list='checked_containers'/>
+                                <div class="state p-success">
+                                    <i class="icon mdi mdi-check"></i>
+                                    <label></label>
+                                </div>
+                            </div>
+
+                        </div>
+                      </div>
+                </td>
+            <td><a href="">{{c.containerName}}</a></td>
+           
+        </tr>
+    </tbody>
+</table>
+                
+</div>
+<!-- <script>
+    $(document).ready(function() {
+  $('#containerTable').DataTable();
+});
+</script> -->
