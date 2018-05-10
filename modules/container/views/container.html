@@ -1,0 +1,167 @@
+
+<!-- <p align="right">Logged in as : {{creds.currentUser.username}}</p> -->
+</br>
+</br>
+<div class ="topright">
+        <a href="/login" id="top" class ="#toTop body"> Logout </a>
+</div>
+<script type="text/ng-template" id="uploadObjs.html">
+                <div class="modal-header">               
+                    <input type="checkbox" ng-model="selectFolder" ng-change="toggleFolder()" class="ng-pristine ng-untouched ng-valid ng-empty">
+                    <div ng-if="isFolder!==true"><h3 class="modal-title" id="modal-title">Upload Files</h3></div>
+                    <div ng-if="isFolder===true"><h3 class="modal-title" id="modal-title">Upload Folder</h3></div>
+
+                <button class="btn-close btn:hover" ng-click="cancel()">Close <i class="fa fa-close"></i></button>
+                
+            </div>
+            <div class="modal-body" id="modal-body">
+               
+		    <div class="oj-flex-item"></div>
+             <div class="oj-flex-item">
+                    
+                <div ng-if="isFolder!==true"> <input type="file" file-upload multiple/> </div>                
+                
+                <div ng-if="isFolder===true">  
+                        <input type="file" id="picker" name="fileList" webkitdirectory multiple>
+                    <!-- <input #folderInput type="file"    ng-change="filesPicked(folderInput.files)" ng-model="selectall" webkitDirectory>  -->
+                    <ul id="listing"></ul>
+                </div>
+                 
+                 <!--     -->
+                  <!-- Select File: <div class="button" ng-file-select ng-model="files"><input type="file" file-upload multiple/></div>
+   
+                  Drop File: <div ng-file-drop ng-model="files" class="drop-box" 
+                                  drag-over-class="dragover" multiple="true" 
+                                  allow-dir="true" accept="image/*,application/pdf">
+                                      Drop Images or PDFs files here
+                             </div>      -->
+
+                         
+            </div>
+           </div>
+            <div class="modal-footer model-lg">                    
+                    <button class="btn btn-primary " ng-click="upload()">Upload</button> 
+                    <button class="btn btn-primary" ng-click="cancel()">Cancel </button>                   
+                    
+            </div>
+        
+</script>
+
+<script type="text/ng-template" id="deleteObjs.html">
+    <div class="modal-header">
+        <h3 class="modal-title" id="modal-title">Delete Objects</h3>
+        <button class="btn-close btn:hover" ng-click="cancel()">Close <i class="fa fa-close"></i></button>
+    </div>
+    
+    <div class="modal-body" id="modal-body" ng-if="checked_objects.length===0">
+        <p>You have not selected any object to delete.
+            Please choose an object and proceed further</p>
+    </div>
+    <div class="modal-body" id="modal-body" ng-if="checked_objects.length>10">
+        <p>Are you sure you want to delete all objects from the current container?</p>
+    </div>
+
+    <div class="modal-body" id="modal-body" ng-if="checked_objects.length>0 && checked_objects.length<=10">
+        <p>Are you sure you want to delete the below objects:</p>
+        <ul>
+            <li ng-repeat="objs in checked_objects">
+               {{objs}}
+            </li>
+        </ul>
+    </div>
+    <div class="modal-footer">
+            <button class="btn btn-primary" ng-click="ok()">Delete</button>  
+            <button class="btn btn-primary" ng-click="cancel()">Cancel <i class="fa fa-close"></i></button>         
+    </div>
+</script> 
+ 
+</div>
+
+<div ng-controller="ContainerController">   
+            
+    <section id="containers-list-top">         
+        <div id="nav-head" class="oj-flex">
+            <div class="breadcrumb-container cf">
+            <ol class="breadcrumb-list" style="padding-left: 0px;">
+                     <span style="text-align:align-left"><a href="/home"><b><i class="fa fa-home" style="font-size:20px;color:rgb(76, 129, 243)"></i></b></a> <i class="fa fa-angle-right"></i><b> {{cc}}</b></span>                   
+                </ol>
+            </div>
+        </div>
+    </section>       
+
+       </div>
+        <div class="float-right" style="margin: 5px;">
+                <button class="btn btn-primary" ng-click="delete('sm')" ng-if="checked_objects.length>0">Delete Objects</button>
+                {{data}}
+                <button class="btn btn-primary" ng-click="upload('sm')">Upload Objects</button>
+       </div>
+    </div>
+</form>
+
+<div class="loader">
+    <div id="loader" class="spinner"></div>
+    <span class="text"><p>{{loadMessage}}</p>{{progress}}</span>    
+</div>
+
+
+ 
+ 
+       
+    
+ <table id="containerTable" class="table table-hover">
+        <thead>
+                <tr><th><div class="pretty p-icon p-round p-jelly ng-scope">         
+                                <input type="checkbox" ng-model="selectall" ng-click="toggleAll()" class="ng-pristine ng-untouched ng-valid ng-empty"> 
+                                <div class="state p-primary">
+                                        <i class="icon mdi mdi-check"></i> 
+                                    <label><b>Select</b></label>                                       
+                                    </div>
+        </div></th>
+                        
+                                
+                    <th ng-click="sort('objName')">Object Name  <i class="fa fa-fw fa-sort"></i>
+                                          
+                    </th>
+                    <th>
+                    <div class="form-group pull-right ng-scope" style="
+                    margin-bottom: 0px;" ng-if="containerObjs.data.Objects.length>1">
+                            <input class="search form-control ng-pristine ng-untouched ng-valid ng-empty" placeholder="search objects here.." type="searchObject" value="searchObject" ng-model="searchObject" id="example-searchObject-input">
+                     </div>
+                    </th>
+                </tr>
+            </thead>  
+        <tbody>  
+
+            <tr dir-paginate="o in containerObjs.data.Objects|orderBy:sortKey:reverse|filter:searchObject|itemsPerPage:500"> <!--containerObjs.data.Objects-->
+                <div class="alert alert-info" ng-show="loading">Fetching Data...</div>
+                <td>                     
+                    <div class="form-group row">                        
+                        <div class="col-sm-10"  ng-if="o.objName !== 'No'">
+                             <div class="pretty p-icon p-round p-jelly">
+                                <input type="checkbox" value="{{o.objName}}" ng-model="selectall" check-list="checked_objects" ng-checked="checkall"/>
+                                <div class="state p-primary">
+                                    <i class="icon mdi mdi-check"></i>
+                                    <label></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                <td><div class="modal-body" id="modal-body" ng-if= "o.objName === 'No'">
+                        <p>There are no objects available in this container</p>
+            </div><div ng-if="o.objName !== 'No'">{{o.objName}}</div></td>
+             <td><div  ng-if="o.objName !== 'No'" style="float: right;" align="right"><button class="btn" ng-disabled="o.objName.includes('-Split')" ng-click='download(o.objName)'><i class="fa fa-download"></i></button></div></td>
+        </tr>    
+    </tbody>
+
+    </table>
+    <dir-pagination-controls max-size="5" direction-links="true" boundary-links="true" template-url="/login/scripts/pagination/dirPaginationCustom.tpl.html"></dir-pagination-controls>
+</div>
+  
+ 
+    <!--&& !o.objName.includes('-Split')-->
+<!-- <script>
+    $(document).ready(function() {
+  $('#containerTable').DataTable();
+});
+</script> -->

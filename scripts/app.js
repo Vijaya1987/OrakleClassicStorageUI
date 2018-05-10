@@ -3,16 +3,35 @@
 // declare modules
 angular.module('Authentication', []);
 angular.module('Home', []);
+angular.module('Container', []);
 
 angular.module('BasicHttpAuthExample', [
     'Authentication',
     'Home',
+    'Container',
     'ngRoute',
     'ngCookies'
 ])
- 
-.config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
+
+.factory('httpRequestInterceptor', ['$rootScope', '$location', function ($rootScope, $location) {
+    return {
+        request: function ($config) {
+            $('.loader').show();
+            return $config;
+        },
+        response: function ($config) {
+            $('.loader').hide();
+            return $config;
+        },
+        responseError: function (response) {
+            return response;
+        }
+    };
+}])
+
+.config(['$routeProvider', '$locationProvider', '$httpProvider', function ($routeProvider, $locationProvider, $httpProvider) {
 console.log('deciding route');
+$httpProvider.interceptors.push('httpRequestInterceptor');
     $routeProvider
         .when('/login', {
             controller: 'LoginController',
@@ -20,9 +39,14 @@ console.log('deciding route');
             hideMenus: true
         })
  
-        .when('/', {
+        .when('/home', {
             controller: 'HomeController',
             templateUrl: '/login/modules/home/views/home.html'
+        })
+
+        .when('/container', {
+            controller: 'ContainerController',
+            templateUrl: '/login/modules/container/views/container.html'
         })
  
         .otherwise({ redirectTo: '/login' });

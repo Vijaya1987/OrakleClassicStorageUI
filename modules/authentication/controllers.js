@@ -7,7 +7,7 @@ angular.module('Authentication')
     function ($scope, $rootScope, $location, AuthenticationService) {
         $scope.login = function () {
             $scope.dataLoading = true;
-            AuthenticationService.SetCredentials($scope.username, $scope.password, $scope.identitydomain);
-            $location.path('/');
+            AuthenticationService.SetCredentials($scope.username, $scope.password, $scope.identityDomain);
+            $location.path('/home');
         };
     }]);

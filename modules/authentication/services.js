@@ -29,14 +29,14 @@ angular.module('Authentication')
 
         };
  
-        service.SetCredentials = function (username, password, identitydomain) {
+        service.SetCredentials = function (username, password, identityDomain) {
             //var authdata = Base64.encode(username + ':' + password);
  
             $rootScope.globals = {
                 currentUser: {
                     username: username,
-                    authdata: password,
-                    identitydomain : identitydomain
+                    password: password,
+                    identityDomain : identityDomain
                 }
             };
  

@@ -1,17 +1,22 @@
 </br>
 </br>
 <!-- <p align="right">Logged in as : {{creds.currentUser.username}}</p> -->
-
+<div class ="topright">
+        <a href="/login" id="top" class ="#toTop body"> Logout </a>
+    </div>
 <script type="text/ng-template" id="myModalContent.html">
             <div class="modal-header">
                 <h3 class="modal-title" id="modal-title">Create Container</h3>
+                <button class="btn-close btn:hover" ng-click="cancel()">Close <i class="fa fa-close"></i></button>
+
             </div>
             <div class="modal-body" id="modal-body">
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text" id="contName">Container Name</span>
+                <div class="">
+                    <div class="">
+                      <b><span class="" id="contName">Container Name:</span></b>
                     </div>
-                    <input type="text" name="contName" id="contName" class="form-control" aria-label="Default" aria-describedby="containerName" ng-model="contName">
+                    <input class="form-control" placeholder=" Enter Container Name here" type="text" id="contName" aria-label="Default" aria-describedby="containerName" ng-model="contName">
+                    <!--<input type="text" name="contName" id="contName" class="form-control" aria-label="Default" aria-describedby="containerName" ng-model="contName">-->
                 </div>    
             </div>
             <div class="modal-footer">
@@ -22,7 +27,8 @@
 
 <script type="text/ng-template" id="myModalContentDelete.html">
     <div class="modal-header">
-        <h3 class="modal-title" id="modal-title">Delete Container</h3>
+        <h3 class="modal-title" id="modal-title" >Delete Container</h3>
+        <button class="btn-close btn:hover" ng-click="cancel()">Close <i class="fa fa-close"></i></button>
     </div>
     <div class="modal-body" id="modal-body">
         <p>Are you sure you want to delete :</p>
@@ -38,53 +44,76 @@
     </div>
 </script>
 
-<div ng-controller="HomeController">
-        
-            <div class="btn-group float-right" style="margin: 5px;" >
-                <button class="btn btn-primary" ng-click="open('sm')">Create Container</button>
-                <button class="btn btn-primary" ng-click="delete('sm')">Delete Container</button>
-            </div>
+<!--<div ng-controller="HomeController">-->
 
-<table id="containerTable" class="table table-hover">
-    <thead>
-        <tr>
-            <th>Select</th>
-            <th>Container Name</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr ng-repeat="c in containers.data.container">
-                <td><div class="form-group row">
-                        
-                        <div class="col-sm-10">
-                          <!-- <div class="form-check"> -->
-                            
-                                <!-- <label class="btn btn-secondary">
-                                  <input type="checkbox" checked autocomplete="off"  value="{{c.containerName}}" check-list='checked_containers'>
-                                </label> -->
-                              <!-- <input class="form-check-input" type="checkbox" value="{{c.containerName}}" check-list='checked_containers'> -->
-                            
-                          <!-- </div> -->
-                          <div class="pretty p-icon p-round p-smooth">
-                                <input type="checkbox" value="{{c.containerName}}" check-list='checked_containers'/>
-                                <div class="state p-success">
-                                    <i class="icon mdi mdi-check"></i>
-                                    <label></label>
-                                </div>
-                            </div>
+    <div class="float-right" style="margin: 5px;">
+        <button class="btn btn-primary" ng-click="open('sm')">Create Container</button>
+        <button class="btn btn-primary" ng-click="delete('sm')" ng-if="checked_containers.length>0" >Delete Container</button>
+    </div>   
+    
+    <table id="containerTable" class="table table-hover">
+        <thead>
+            <tr> 
+          <th> 
+            <div class="pretty p-icon p-round p-jelly">         
+                <input type="checkbox" ng-model="selectall" ng-click="toggleAll()"/> 
+                <div class="state p-primary">
+                        <i class="icon mdi mdi-check"></i> 
+                    <label><b>Select</b></label>                                       
+                    </div>
+                    <div></div>
+                </div>
+                </th>
+                <th ng-click="sort('containerName')">Container Name
+                    <i class="fa fa-fw fa-sort"></i>
+                    <div></div>
+                </th>
+               
+               <th>
+                   <div class="form-group pull-right" style="
+                   margin-bottom: 0px;">
+                        <input class="search form-control" 
+                        placeholder="search containers here.." type="searchObj" value="searchObj" ng-model="searchObj" id="example-search-input">
+                   </div>
+                    
+               </th>
+            </tr>
+        </thead>
+        <tbody>
+               
+            <tr dir-paginate="c in containers.data.container|orderBy:sortKey:reverse|filter:searchObj|itemsPerPage:500"> <!--containers.data.container-->
+                <div class="alert alert-info" ng-show="loading">Fetching Data...</div>
+                <div class="col-lg-12 col-sm-12 col-xs-12 alert alert-success" ng-show="successMessagebool ">
+                        <strong>{{successMessage }}</strong>
+                </div>
+                <td>
+                    <div class="form-group row">
+                        <div class="col-sm-10">                                                   
+                            <div class="pretty p-icon p-round p-jelly">
+                                    <input type="checkbox" value="{{c.containerName}}" ng-model="selectall"  check-list="checked_containers" ng-checked="checkall"/>
+                                    <div class="state p-primary">
+                                        <i class="icon mdi mdi-check"></i> 
+                                    <label></label>                                       
+                                    </div>
+                                </div>      
+
 
                         </div>
-                      </div>
+                    </div>
                 </td>
-            <td><a href="">{{c.containerName}}</a></td>
-           
-        </tr>
-    </tbody>
-</table>
+                <td>
+                    <a href="" ng-click="containerClick(c.containerName)">{{c.containerName}}</a> 
+                </td>
+                <td></td>
                 
+            </tr>
+        </tbody>
+    </table>
+
+    <dir-pagination-controls max-size="5" direction-links="true" boundary-links="true" template-url="/login/scripts/pagination/dirPaginationCustom.tpl.html"></dir-pagination-controls>
+
+
+<!--</div>--> 
+<div class="loader">
+    <div id="loader" class="spinner"></div>
 </div>
-<!-- <script>
-    $(document).ready(function() {
-  $('#containerTable').DataTable();
-});
-</script> -->
